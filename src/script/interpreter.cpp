@@ -12,6 +12,8 @@
 #include "pubkey.h"
 #include "script/script.h"
 #include "uint256.h"
+#include "util.h"
+#include "utilstrencodings.h"
 
 typedef std::vector<unsigned char> valtype;
 
@@ -1397,7 +1399,17 @@ uint256 SignatureHash(const CScript &scriptCode, const CTransaction &txTo,
         ss << txTo.nLockTime;
         // Sighash type
         ss << nHashType;
-
+LogPrintf("version: %d\n", txTo.nVersion);
+LogPrintf("hashPrevouts: %64x\n", hashPrevouts.ToString());
+LogPrintf("hashSequence: %64x\n", hashSequence.ToString());
+LogPrintf("prevOut: %68x\n", txTo.vin[nIn].prevout.ToString());
+LogPrintf("scriptCode: %x\n", HexStr(scriptCode.begin(), scriptCode.end()));
+LogPrintf("hashOutputs: %64x\n", hashOutputs.ToString());
+LogPrintf("amount: %d\n", amount);
+LogPrintf("sequence: %d\n", txTo.vin[nIn].nSequence);
+LogPrintf("nLockTime: %d\n", txTo.nLockTime);
+LogPrintf("hashType: %d\n", nHashType);
+LogPrintf("hash: %64x\n", ss.GetHash().ToString());
         return ss.GetHash();
     }
 

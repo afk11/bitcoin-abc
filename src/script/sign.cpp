@@ -11,6 +11,8 @@
 #include "primitives/transaction.h"
 #include "script/standard.h"
 #include "uint256.h"
+#include "utilstrencodings.h"
+#include "util.h"
 
 typedef std::vector<unsigned char> valtype;
 
@@ -91,7 +93,10 @@ static bool SignStep(const BaseSignatureCreator &creator,
             return false;
         case TX_PUBKEY:
             keyID = CPubKey(vSolutions[0]).GetID();
+            LogPrintf("keyID: %x\n", keyID.ToString());
+            LogPrintf("scriptPubKey: %x\n", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
             return Sign1(keyID, creator, scriptPubKey, ret);
+
         case TX_PUBKEYHASH: {
             keyID = CKeyID(uint160(vSolutions[0]));
             if (!Sign1(keyID, creator, scriptPubKey, ret)) {
